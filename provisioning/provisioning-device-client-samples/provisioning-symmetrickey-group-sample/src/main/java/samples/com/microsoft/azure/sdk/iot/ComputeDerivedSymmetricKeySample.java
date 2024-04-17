@@ -24,11 +24,11 @@ public class ComputeDerivedSymmetricKeySample
     // Note that this enrollment group level key should NOT be saved to each device. If leaked, this key would allow
     // any device to spoof another device which is insecure. The derived key that this sample generates should be the
     // only key saved to each device.
-    private static final String ENROLLMENT_GROUP_SYMMETRIC_KEY = "[Enter your group enrollment symmetric key here]";
+    private static final String ENROLLMENT_GROUP_SYMMETRIC_KEY = "R3ds97LbU/bx39tBFG4Wn4+SoAlQt6mUCr7tbh7iDGtrleHv3rqsPJj3vTfNv9JRFOn6DYVH/ZANEe/p8gtk1A==";
 
     // The Id to assign to this device when it is provisioned to an IoT Hub. This value is arbitrary outside of some
     // character limitations. For sample purposes, this value is filled in for you, but it may be changed.
-    private static final String PROVISIONED_DEVICE_ID = "myProvisionedDevice";
+    private static final String PROVISIONED_DEVICE_ID = "dps-reg-group-01-d00002";
 
     public static void main(String[] args) throws Exception
     {
