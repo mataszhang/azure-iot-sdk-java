@@ -13,31 +13,70 @@ import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *  查看 ProvisioningX509Sample ： 在DPS中使用X509自签名证书来实现设备注册
+ *  连接字符串通过 Azure IoT Explorer Preview 查看 ， 例如： HostName=east-asia-iot-hub.azure-devices.net;DeviceId=ca-sign-device-0002;x509=true
+ *
+ *
+ */
+
 /** Sends a number of event messages to an IoT Hub. */
 public class SendEventX509
 {
     //PEM encoded representation of the public key certificate
     private static final String publicKeyCertificateString =
             "-----BEGIN CERTIFICATE-----\n" +
-            "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n" +
-            "-----END CERTIFICATE-----\n";
+                    "MIIDdDCCAlygAwIBAgIQXWXPOGW0/q5Egx9kLGX+xzANBgkqhkiG9w0BAQsFADAo\n" +
+                    "MSYwJAYDVQQDDB1BenVyZSBJb1QgQ0EgVGVzdE9ubHkgUm9vdCBDQTAeFw0yNDA0\n" +
+                    "MTcwMDU4NDJaFw0yNDA1MTcwMTA4NDJaMB4xHDAaBgNVBAMME2NhLXNpZ24tZGV2\n" +
+                    "aWNlLTAwMDIwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDf8rsL6hcn\n" +
+                    "f9G8xrs1T4ZqOqG8DU2dkHXpCRPmfbeQJN+7TtO5slf++peoad/vo/EFmBWxdCEB\n" +
+                    "k2D+O8FUY9JTqrWbqMRt04v9jgNNA1QSmx5yvIVwquAfRq9jAC/i1rxm426/BmQD\n" +
+                    "eB1YDfVfkpXMDeGVEudtJ7YmZb5DS9eXnkdxW5hdCX+ioB3AJlyFJt/5h39I050A\n" +
+                    "P0GXg+7ew3UDFr0pw3FOSqB+RLTtLQsKbxtPMsQdIs+VidTCzMIdJJNXyZzirYK/\n" +
+                    "4WBmt7fqXTNMby0VSpqrIEI1+kpLmHzXIkNCkXKuh9ZKuQoOOsLYqKLqqVspCOjf\n" +
+                    "lRpqGCNPqjL9AgMBAAGjgaMwgaAwDgYDVR0PAQH/BAQDAgWgMB4GA1UdEQQXMBWC\n" +
+                    "E2NhLXNpZ24tZGV2aWNlLTAwMDIwHQYDVR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUF\n" +
+                    "BwMBMA8GA1UdEwEB/wQFMAMCAQAwHwYDVR0jBBgwFoAUzYJZHnnpA30EVDhx0hR5\n" +
+                    "0y1X/+EwHQYDVR0OBBYEFNbqPyfp4T0dzMgyHbWpQq/SQSqYMA0GCSqGSIb3DQEB\n" +
+                    "CwUAA4IBAQBIGa+ugs7HXT5ln0qkKCPmyccRhTAzDpfAKNJqHw/BK/WFwEe0nF3x\n" +
+                    "qtfo6yDXEzStv1dxwv58PW4soT++mBzSiEh1hUi2axlE18EaTdDKmKxpALdS7sMA\n" +
+                    "THQRdQbfyqjmP97du4PwG7UcBnJeBd/ELgaXyAtSytKrFl3sFQSRo2CK/m1L5VHm\n" +
+                    "UNYx2tiHBY0hqBfa0gQtoompEQWvVfT1d8kbINd7Fvzo5vpLbXDRzc7tw4G4qhIP\n" +
+                    "NWhFb2rp4yd9zY5ZhboqazCBnNppL2mwh09St4hDmG9oHN0wS+d2AMiuSjBYg7M/\n" +
+                    "EYrwqidIBzuhouQuKTOjGQLIcuZfh7Sr\n" +
+                    "-----END CERTIFICATE-----\n";
 
     //PEM encoded representation of the private key
     private static final String privateKeyString =
             "-----BEGIN PRIVATE KEY-----\n" +
-            "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n" +
-            "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX\n" +
-            "-----END PRIVATE KEY-----\n";
+                    "MIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDf8rsL6hcnf9G8\n" +
+                    "xrs1T4ZqOqG8DU2dkHXpCRPmfbeQJN+7TtO5slf++peoad/vo/EFmBWxdCEBk2D+\n" +
+                    "O8FUY9JTqrWbqMRt04v9jgNNA1QSmx5yvIVwquAfRq9jAC/i1rxm426/BmQDeB1Y\n" +
+                    "DfVfkpXMDeGVEudtJ7YmZb5DS9eXnkdxW5hdCX+ioB3AJlyFJt/5h39I050AP0GX\n" +
+                    "g+7ew3UDFr0pw3FOSqB+RLTtLQsKbxtPMsQdIs+VidTCzMIdJJNXyZzirYK/4WBm\n" +
+                    "t7fqXTNMby0VSpqrIEI1+kpLmHzXIkNCkXKuh9ZKuQoOOsLYqKLqqVspCOjflRpq\n" +
+                    "GCNPqjL9AgMBAAECggEAd0SXl03RjQjG08nnNAopZPPa5QMUvgCMu1JJVezIUS1C\n" +
+                    "NkhR/EjeEn61PE0+pSrjlv4bN4nIdkVeV6fNW7tZ7ZMx6zejfXY3zQ7P9Tj7knko\n" +
+                    "ayS50HpAqIeFqq0T07RXXFhtx7CInUxgHGA6uO6hdq5B4JnTxM9sc+ClxsNii20R\n" +
+                    "9hiaizUoeNYPxjoZj+778AjEvtfyju0Z5HwDulLDFpvhtts090jq+cQ5nmzQKlAj\n" +
+                    "6p0ytTxmkGWjmYzjCvbzP+6+HdwoHFgZK4244BF8HuzaBKlg3dr06S4YL3d+rYJA\n" +
+                    "d/WvrUln7HGv8AUlb1kocVLF2ObYn15zhromcbZ+5QKBgQDjx6h7L3nFfeTujwTH\n" +
+                    "v30gr0bV0jYwYS/8mfu1x+9AMyck4qOAFTrl+WEkI3SimH5jpA5OfsxnD1rhGa8a\n" +
+                    "i1Yaik766QLNrkD6LjxhfwIwf7nVX7Bpl838n8h74pRfAW7S6EPRi/3MH9grj5dj\n" +
+                    "yn6ltpiNdHg69tjKSgRIXpsg8wKBgQD7sYsmesot0zXbzXZIZYRXdgy6KOZOLwEB\n" +
+                    "R76SKIJTtdMtnMsrjSz2YvNAYZSRFdKZj84zuJ3dEpiC9n/w/Xirhbl9b+f3WRuw\n" +
+                    "vEr8EriuDXGhP/HjRohurJgsPOD0DomQ1DBO7cQdF4Zz2f9b0xCPvtPdxyGdYfYn\n" +
+                    "jmZcbYrYTwKBgFuYhEXVF5C1SYQs+u0gMb8c/M0rFSNrUZKwkSnOVoVojIsmoDz3\n" +
+                    "TJICMHAJ2fMwg1KqPB6Qmr2uzQrL+0AfW+acS5pWbQws0HBKe3lxS34ZPq9xJU2w\n" +
+                    "/+JgloxK1wNFXj1trSfstYiKHbGWsngsi7UzsjDf7yE29oKSNRqtAJDFAoGAdrxy\n" +
+                    "HawNlwKtxMyvwUWK4kvBg0zqIPYRrk3vPDo6CU2cm0b9ncUS8gUKJlQiZzN5T5JE\n" +
+                    "v6eXaYRtSFMLVl/tPlVuhRt2vfxekMizQyl90DZtZZmp/gL3N+baPvxVTy1Qfm9r\n" +
+                    "fsCyJNtFRYAQ9Huks3tdraFUXU+qdUy7Q102BAcCgYA9VJKc/lNaO8SacO0X8spP\n" +
+                    "83SO5P89G+tEg/u3SgzeduFRE6AHRJjrMMiVqjf585sYPu7K4EG+xHwrMgk+4NAQ\n" +
+                    "/PyDCqfup19Pis7GJWsaPd6sfzMLovb0yzMzqGGh8sIRMe/hiRdBht1QHnScllBq\n" +
+                    "A+hBSb1J4IHJcyIdhBxrhA==\n" +
+                    "-----END PRIVATE KEY-----\n";
 
     // The maximum amount of time to wait for a message to be sent. Typically, this operation finishes in under a second.
     private static final int D2C_MESSAGE_TIMEOUT_MILLISECONDS = 10000;

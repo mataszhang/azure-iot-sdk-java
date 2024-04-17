@@ -24,7 +24,7 @@ import java.util.Scanner;
 public class ProvisioningSymmetricKeyEnrollmentGroupSample
 {
     // The scope Id of your DPS instance. This value can be retrieved from the Azure Portal
-    private static final String ID_SCOPE = "[Your ID scope here]";
+    private static final String ID_SCOPE = "0ne00C87B3E";
 
     // Note that a different value is required here when connecting to a private or government cloud instance. This
     // value is fine for most DPS instances otherwise.
@@ -33,12 +33,13 @@ public class ProvisioningSymmetricKeyEnrollmentGroupSample
     // Not to be confused with the symmetric key of the enrollment group itself, this key is derived from the symmetric
     // key of the enrollment group and the desired device id of the device to provision. See the
     // "ComputeDerivedSymmetricKeySample" code in this same directory for instructions on how to derive this key.
-    private static final String DERIVED_ENROLLMENT_GROUP_SYMMETRIC_KEY = "[Enter your derived symmetric key here]";
+    // 这个key不是 group的对称秘钥，而是通过 ComputeDerivedSymmetricKeySample 中的示例生成的
+    private static final String DERIVED_ENROLLMENT_GROUP_SYMMETRIC_KEY = "AlBoZ11StenDhPmMatogqkfQniO+xfUGuJHdN8VlbMs=";
 
     // The Id to assign to this device when it is provisioned to an IoT Hub. This value is arbitrary outside of some
     // character limitations. For sample purposes, this value is filled in for you, but it may be changed. This value
     // must be consistent with the device id used when deriving the symmetric key that is used in this sample.
-    private static final String PROVISIONED_DEVICE_ID = "myProvisionedDevice";
+    private static final String PROVISIONED_DEVICE_ID = "dps-reg-group-01-d00002";
 
     // Uncomment one line to choose which protocol you'd like to use
     private static final ProvisioningDeviceClientTransportProtocol PROVISIONING_DEVICE_CLIENT_TRANSPORT_PROTOCOL = ProvisioningDeviceClientTransportProtocol.HTTPS;
@@ -76,6 +77,7 @@ public class ProvisioningSymmetricKeyEnrollmentGroupSample
             // connect to iothub
             String iotHubUri = provisioningDeviceClientRegistrationResult.getIothubUri();
             String deviceId = provisioningDeviceClientRegistrationResult.getDeviceId();
+            // 注册成功后，后续就可以通过 IotHub Uri + Device ID + securityClientSymmetricKey 来构建连接字符串，直接与Iot Hub通信
             DeviceClient deviceClient = new DeviceClient(iotHubUri, deviceId, securityClientSymmetricKey, IotHubClientProtocol.MQTT);
             deviceClient.open(false);
 
