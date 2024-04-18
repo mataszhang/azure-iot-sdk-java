@@ -15,9 +15,14 @@ import java.nio.charset.StandardCharsets;
 public class AzureIoTCentralDeviceConnectionStringGenerator
 {
     public static void main(String[] args) throws Exception {
+
+        // dps的id scope
         String dpsIdScope = "x";
-        String deviceSymmetricKey = "x";
+        // 设备id
         String dpsDeviceId = "x";
+        //设备对称秘钥
+        String deviceSymmetricKey = "x";
+
 
         String dpsGlobalEndpoint = "global.azure-devices-provisioning.net";
 
