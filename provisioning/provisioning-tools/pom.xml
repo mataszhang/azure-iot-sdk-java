@@ -40,6 +40,7 @@
     </properties>
     <modules>
         <module>provisioning-x509-cert-generator</module>
+        <module>device-client-connect-tools</module>
     </modules>
     <dependencies>
     </dependencies>

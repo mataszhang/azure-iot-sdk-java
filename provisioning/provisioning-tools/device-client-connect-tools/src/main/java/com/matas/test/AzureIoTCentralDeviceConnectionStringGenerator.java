@@ -1,4 +1,4 @@
-package samples.com.microsoft.azure.sdk.iot.device;
+package com.matas.test;
 
 import com.microsoft.azure.sdk.iot.provisioning.device.ProvisioningDeviceClient;
 import com.microsoft.azure.sdk.iot.provisioning.device.ProvisioningDeviceClientRegistrationResult;
@@ -9,19 +9,27 @@ import com.microsoft.azure.sdk.iot.provisioning.security.SecurityProviderSymmetr
 import java.nio.charset.StandardCharsets;
 
 /**
+ * 通过 UI 在界面配置的设备
+ *
  * @author shengming.zhang
  * @email shengming.zhang@legrand.com
  */
 public class AzureIoTCentralDeviceConnectionStringGenerator
 {
+
+    /**
+     * 将设备注册到 Iot Central的DPS中，然后返回连接字符串
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
 
         // dps的id scope
-        String dpsIdScope = "x";
+        String dpsIdScope = "0ne00C2D62B";
         // 设备id
-        String dpsDeviceId = "x";
+        String dpsDeviceId = "ccm-001";
         //设备对称秘钥
-        String deviceSymmetricKey = "x";
+        String deviceSymmetricKey = "2dP91pgujuXIfK4+Ebl+4zhdnbk=";
 
 
         String dpsGlobalEndpoint = "global.azure-devices-provisioning.net";
